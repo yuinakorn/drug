@@ -9,6 +9,7 @@ import os
 from dotenv import dotenv_values
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
+from dotenv import dotenv_values
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -20,17 +21,19 @@ config_env = {
 app = FastAPI()
 
 origins = [
-    "https://viewer.cmhis.org",
-    "http://localhost:8080",
+    config_env["ORIGINS_URL_1"],
+    config_env["ORIGINS_URL_2"],
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET"],
-    allow_headers=["*"],
+    allow_methods=[config_env["ALLOW_METHODS"]],
+    allow_headers=[config_env["ALLOW_HEADERS"]],
 )
+
 
 def get_db():
     try:
