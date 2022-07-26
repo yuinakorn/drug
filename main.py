@@ -10,6 +10,8 @@ from dotenv import dotenv_values
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 
+from fastapi.middleware.cors import CORSMiddleware
+
 config_env = {
     **dotenv_values(".env"),  # load local file development variables
     **os.environ,  # override loaded values with system environment variables
@@ -17,6 +19,18 @@ config_env = {
 
 app = FastAPI()
 
+origins = [
+    "https://viewer.cmhis.org",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 def get_db():
     try:
