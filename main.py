@@ -54,8 +54,7 @@ async def root():
 
 @app.get("/drug/allergy/{cid}/t/{token}", tags=["Read"])
 async def read_drug_allergy(cid: str, token: str, db: Session = Depends(get_db)):
-    drug_name = []
-    drug_alg_cid = await db.query(models.DrugAllergy).filter(models.DrugAllergy.cid == cid).first()
+    drug_alg_cid = db.query(models.DrugAllergy).filter(models.DrugAllergy.cid == cid).first()
 
     # if cid is not a number, return error
     if not cid.isdigit():
