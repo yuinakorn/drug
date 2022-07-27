@@ -6,7 +6,6 @@ from starlette import status
 
 import models
 import os
-from dotenv import dotenv_values
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from dotenv import dotenv_values
@@ -50,14 +49,13 @@ class DrugAllergy(BaseModel):
 
 @app.get("/", status_code=200, tags=["Read"])
 async def root():
-    print(config_env["DATABASE_URL"])
     return {"message": "Hello API"}
 
 
 @app.get("/drug/allergy/{cid}/t/{token}", tags=["Read"])
 async def read_drug_allergy(cid: str, token: str, db: Session = Depends(get_db)):
     drug_name = []
-    drug_alg_cid = db.query(models.DrugAllergy).filter(models.DrugAllergy.cid == cid).first()
+    drug_alg_cid = await db.query(models.DrugAllergy).filter(models.DrugAllergy.cid == cid).first()
 
     # if cid is not a number, return error
     if not cid.isdigit():
