@@ -11,7 +11,12 @@ config_env = {
 
 DATABASE_URL = config_env["DATABASE_URL"]
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL,
+                       connect_args={"connect_timeout": 10},
+                       pool_size=20, max_overflow=0,
+                       pool_recycle=3600, echo=False,
+                       isolation_level="READ_COMMITTED"
+                       )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

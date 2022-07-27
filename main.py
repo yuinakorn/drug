@@ -24,7 +24,6 @@ origins = [
     config_env["ORIGINS_URL_2"],
 ]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
